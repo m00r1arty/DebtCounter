@@ -22,7 +22,7 @@ object AppModule {
         Room.databaseBuilder(
             app,
             DebtDatabase::class.java,
-            "todo_db"
+            "debt_db"
         ).build()
 
     @Provides

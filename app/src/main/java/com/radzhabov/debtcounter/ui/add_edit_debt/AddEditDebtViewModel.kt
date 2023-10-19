@@ -18,8 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditDebtViewModel @Inject constructor(
     private val repository: DebtRepository,
-    savedStateHandle: SavedStateHandle,
-): ViewModel() {
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
     var debt by mutableStateOf<Debt?>(null)
         private set
 
@@ -36,10 +36,10 @@ class AddEditDebtViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
-        val debtId = savedStateHandle.get<Int>("debtId")!!
-        if (debtId != -1){
+        val debtId = savedStateHandle.get<Int>("debtId") ?: -1
+        if (debtId != -1) {
             viewModelScope.launch {
-                repository.getDeptById(debtId)?.let {  debt ->
+                repository.getDeptById(debtId)?.let { debt ->
                     title = debt.title
                     description = debt.description ?: ""
                     price = debt.price
@@ -62,22 +62,22 @@ class AddEditDebtViewModel @Inject constructor(
             }
             is AddEditDebtEvent.OnSaveDebtClick -> {
                 viewModelScope.launch {
-                    if (title.isNotBlank() && price.isNotBlank()) {
+                    if (title.isBlank() || price.isBlank()) {
                         sendUiEvent(UiEvent.ShowSnackbar(
                             message = "The title and price can't be empty"
                         ))
-                        return@launch
-                    }
-                    repository.insertDept(
-                        Debt(
-                            title = title,
-                            description = description,
-                            price = price,
-                            isDone = debt?.isDone ?: false,
-                            id = debt?.id
+                    } else {
+                        repository.insertDept(
+                            Debt(
+                                title = title,
+                                description = description,
+                                price = price,
+                                isDone = debt?.isDone ?: false,
+                                id = debt?.id
+                            )
                         )
-                    )
-                    sendUiEvent(UiEvent.PopBackStack)
+                        sendUiEvent(UiEvent.PopBackStack)
+                    }
                 }
             }
         }
