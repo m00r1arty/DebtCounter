@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,50 +28,51 @@ fun DebtItem(
     onEvent: (DebtListEvent) -> Unit,
     modifier: Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = debt.title,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.padding(8.dp))
-                IconButton(onClick = {
-                    onEvent(DebtListEvent.OnDeleteDebtClick(debt))
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete",
-                    )
-                }
-            }
-            debt.description?.let {
-//                Spacer(modifier = Modifier.padding(8.dp))
-                Text(text = it)
-            }
-
-        }
-        Row (
-            modifier = Modifier.weight(0.5f),
+    Card {
+        Row(
+            modifier = modifier,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
         ) {
-            Text(text = debt.price)
-            Checkbox(
-                checked = debt.isDone,
-                onCheckedChange = { isChecked ->
-                    onEvent(DebtListEvent.OnDoneChange(debt, isChecked))
-                },
-            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = debt.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    IconButton(onClick = {
+                        onEvent(DebtListEvent.OnDeleteDebtClick(debt))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                        )
+                    }
+                }
+                debt.description?.let {
+                    Text(text = it)
+                }
+
+            }
+            Row (
+                modifier = Modifier.weight(0.5f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(text = debt.price)
+                Checkbox(
+                    checked = debt.isDone,
+                    onCheckedChange = { isChecked ->
+                        onEvent(DebtListEvent.OnDoneChange(debt, isChecked))
+                    },
+                )
+            }
         }
     }
 }
