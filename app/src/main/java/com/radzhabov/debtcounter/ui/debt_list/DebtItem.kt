@@ -1,6 +1,8 @@
 package com.radzhabov.debtcounter.ui.debt_list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,50 +32,57 @@ fun DebtItem(
     onEvent: (DebtListEvent) -> Unit,
     modifier: Modifier,
 ) {
-    Card {
-        Row(
-            modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
+    Box {
+        Card(
+            modifier = Modifier
+                .padding(8.dp),
+            elevation = CardDefaults.cardElevation(10.dp),
+            border = BorderStroke(3.dp, Color.Gray)
         ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = debt.title,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.padding(8.dp))
-                    IconButton(onClick = {
-                        onEvent(DebtListEvent.OnDeleteDebtClick(debt))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
-                        )
-                    }
-                }
-                debt.description?.let {
-                    Text(text = it)
-                }
-
-            }
-            Row (
-                modifier = Modifier.weight(0.5f),
+            Row(
+                modifier = modifier,
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = debt.price)
-                Checkbox(
-                    checked = debt.isDone,
-                    onCheckedChange = { isChecked ->
-                        onEvent(DebtListEvent.OnDoneChange(debt, isChecked))
-                    },
-                )
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = debt.name,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.padding(8.dp))
+                        IconButton(onClick = {
+                            onEvent(DebtListEvent.OnDeleteDebtClick(debt))
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete",
+                            )
+                        }
+                    }
+                    debt.description?.let {
+                        Text(text = it)
+                    }
+
+                }
+                Row (
+                    modifier = Modifier.weight(0.5f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(text = debt.price)
+                    Checkbox(
+                        checked = debt.isDone,
+                        onCheckedChange = { isChecked ->
+                            onEvent(DebtListEvent.OnDoneChange(debt, isChecked))
+                        },
+                    )
+                }
             }
         }
     }
@@ -82,7 +93,7 @@ fun DebtItem(
 fun DebtItemPreview() {
     val debt = Debt(
         id = 1,
-        title = "Пример задолженности",
+        name = "Пример задолженности",
         price = "100 руб.",
         description = "Описание задолженности",
         isDone = false

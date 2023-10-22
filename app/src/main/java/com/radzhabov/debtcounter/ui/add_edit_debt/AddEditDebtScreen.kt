@@ -89,6 +89,7 @@ fun AddEditDebtScreen(
                 singleLine = false,
                 maxLines = 5,
             )
+            Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = viewModel.price,
                 onValueChange = {
