@@ -67,9 +67,9 @@ fun AddEditDebtScreen(
                 .padding(innerPadding)
         ) {
             TextField(
-                value = viewModel.title,
+                value = viewModel.name,
                 onValueChange = {
-                    viewModel.onEvent(AddEditDebtEvent.OnTitleChange(it))
+                    viewModel.onEvent(AddEditDebtEvent.OnNameChange(it))
                 },
                 placeholder = {
                     Text(text = "Title")
