@@ -40,7 +40,7 @@ class AddEditDebtViewModel @Inject constructor(
         if (debtId != -1) {
             viewModelScope.launch {
                 repository.getDeptById(debtId)?.let { debt ->
-                    title = debt.title
+                    title = debt.name
                     description = debt.description ?: ""
                     price = debt.price
                     this@AddEditDebtViewModel.debt = debt
@@ -69,7 +69,7 @@ class AddEditDebtViewModel @Inject constructor(
                     } else {
                         repository.insertDept(
                             Debt(
-                                title = title,
+                                name = title,
                                 description = description,
                                 price = price,
                                 isDone = debt?.isDone ?: false,

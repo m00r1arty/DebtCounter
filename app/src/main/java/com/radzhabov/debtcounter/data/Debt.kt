@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Debt(
     @PrimaryKey val id:Int? = null,
-    val title: String,
+    val name: String,
     val price: String,
     val description: String?,
     val isDone: Boolean,
