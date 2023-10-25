@@ -23,7 +23,7 @@ class AddEditDebtViewModel @Inject constructor(
     var debt by mutableStateOf<Debt?>(null)
         private set
 
-    var title by mutableStateOf("")
+    var name by mutableStateOf("")
         private set
 
     var description by mutableStateOf("")
@@ -40,7 +40,7 @@ class AddEditDebtViewModel @Inject constructor(
         if (debtId != -1) {
             viewModelScope.launch {
                 repository.getDeptById(debtId)?.let { debt ->
-                    title = debt.name
+                    name = debt.name
                     description = debt.description ?: ""
                     price = debt.price
                     this@AddEditDebtViewModel.debt = debt
@@ -51,8 +51,8 @@ class AddEditDebtViewModel @Inject constructor(
 
     fun onEvent(event: AddEditDebtEvent) {
         when (event) {
-            is AddEditDebtEvent.OnTitleChange -> {
-                title = event.title
+            is AddEditDebtEvent.OnNameChange -> {
+                name = event.title
             }
             is AddEditDebtEvent.OnDescriptionChange -> {
                 description = event.description
@@ -62,14 +62,14 @@ class AddEditDebtViewModel @Inject constructor(
             }
             is AddEditDebtEvent.OnSaveDebtClick -> {
                 viewModelScope.launch {
-                    if (title.isBlank() || price.isBlank()) {
+                    if (name.isBlank() || price.isBlank()) {
                         sendUiEvent(UiEvent.ShowSnackbar(
                             message = "The title and price can't be empty"
                         ))
                     } else {
                         repository.insertDept(
                             Debt(
-                                name = title,
+                                name = name,
                                 description = description,
                                 price = price,
                                 isDone = debt?.isDone ?: false,
